@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="hidden lg:col-span-2 lg:block">
-            <div class="w-full">
+            <div class="w-full relative">
                 <div class="relative flex justify-between items-center p-3 border-b border-gray-300">
                     <div class="flex items-center">
 
@@ -36,7 +36,7 @@
                     </a>
                 </div>
 
-                <div class="relative w-full p-6 overflow-y-auto h-[40rem]">
+                <div class="relative w-full p-6 overflow-y-auto h-fit">
                     <ul class="space-y-2">
                         @foreach ($messages as $message)
                             @if ($message->chat->user->id != Auth::user()->id)
@@ -56,7 +56,7 @@
                     </ul>
                 </div>
 
-                <div class="flex items-center justify-between w-full p-3 border-t border-gray-300">
+                <div class="flex absolute items-center justify-between w-full p-3 border-t border-gray-300">
                     <input type="text" placeholder="Message"
                         class="block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
                         name="message" required />
