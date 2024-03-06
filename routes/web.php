@@ -21,16 +21,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/message', function () {
-    return view('chat.message');
-});
+// Route::get('/message', function () {
+//     return view('chat.message');
+// })->name('chat.message');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-Route::resource('chats', ChatRoomController::class)->only(['index'])->middleware(['auth', 'verified']);
+Route::get('/message/{id}', [ChatRoomController::class, 'message'])->name('chat.message');
+Route::resource('chats', ChatRoomController::class)->only(['index', 'message'])->middleware(['auth', 'verified']);
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
