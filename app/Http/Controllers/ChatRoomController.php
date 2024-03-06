@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Chat;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatRoomController extends Controller
 {
@@ -31,8 +33,11 @@ class ChatRoomController extends Controller
     function message($id)
     {
         $messages = ChatMessage::where('chat_room_id', $id)->get();
-        dd($messages);
-        return view('chat.message');
+        $users = Chat::where('chat_room_id', $id)->whereNot('user_id', Auth::user()->id)->first();
+        // dd($users);
+
+
+        return view('chat.message', compact('messages', 'users'));
     }
 
     /**
