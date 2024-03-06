@@ -1,31 +1,93 @@
 <x-app-layout>
-    <x-slot name="header">
+    <x-slot name="header" class="">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Chat') }}
         </h2>
     </x-slot>
+    <div class="mt-4">
 
-    <div class="pt-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex">
-                <div class="w-10 h-10 bg-black m-3"></div>
-                <div class="p-6 text-gray-900">
-                    <div class="ms-auto">
-                        <h1 class="text-2xl">Nama Pengirim</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. illo eveniet quas quis velit quae
-                            maxime, laudantium quibusdam accusamus</p>
+        <div class="pt-3">
+            <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 bg-white py-3 flex rounded-lg shadow-md hover:bg-slate-50 ">
+                <div class="w-auto">
+
+                    <div class="bg-black w-16 h-16 rounded-full me-4"></div>
+                </div>
+                <div class="">
+                    <h2 class="text-black text-2xl font-medium">Rahmat</h2>
+                    <p class="text-gray-400 line-clamp-1">Lorem ipsum dolor shidhai diaida iadhiahhddajdjadjodj
+                        dadiahdiidhid
+                        djadagudagd
+                        augdugdugaudgug</p>
+
+                </div>
+                <div class="ms-auto text-gray-400">
+                    12.00
+                </div>
+
+            </div>
+        </div>
+        {{-- <div class="pt-3">
+            <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 bg-white py-3 flex rounded-lg shadow-md">
+                <div class="w-auto">
+
+                    <div class="bg-black w-16 h-16 rounded-full me-4"></div>
+                </div>
+                <div class="">
+                    <h2 class="text-black text-2xl">Rahmat</h2>
+                    <p class="text-gray-400 line-clamp-1">Lorem ipsum dolor shidhai diaida iadhiahhddajdjadjodj
+                        dadiahdiidhid
+                        djadagudagd
+                        augdugdugaudgug</p>
+
+                </div>
+                <div class="ms-auto text-gray-400">
+                    12.00
+                </div>
+
+            </div>
+        </div>
+        <div class="pt-3">
+            <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 bg-white py-3 flex rounded-lg shadow-md">
+                <div class="w-auto">
+
+                    <div class="bg-black w-16 h-16 rounded-full me-4"></div>
+                </div>
+                <div class="">
+                    <h2 class="text-black text-2xl">Rahmat</h2>
+                    <p class="text-gray-400 line-clamp-1">Lorem ipsum dolor shidhai diaida iadhiahhddajdjadjodj
+                        dadiahdiidhid
+                        djadagudagd
+                        augdugdugaudgug</p>
+
+                </div>
+                <div class="ms-auto text-gray-400">
+                    12.00
+                </div>
+
+            </div>
+        </div> --}}
+        {{-- <div class="pt-3">
+                <div
+                    class="max-w-3xl mx-auto sm:px-6 lg:px-8 bg-gradient-to-r from-pink-900 to-purple-700 py-3 flex rounded-lg">
+                    <div class="w-auto">
+
+                        <div class="bg-white w-16 h-16 rounded-full me-4"></div>
                     </div>
+                    <div class="">
+                        <h2 class="text-white text-2xl">Rahmat</h2>
+                        <p class="text-gray-200 line-clamp-1">Lorem ipsum dolor shidhai diaida iadhiahhddajdjadjodj
+                            dadiahdiidhid
+                            djadagudagd
+                            augdugdugaudgug</p>
+
+                    </div>
+                    <div class="ms-auto text-white">
+                        12.00
+                    </div>
+
                 </div>
-            </div>
-        </div>
+            </div> --}}
     </div>
-    <div class="pt-3">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __('Chat') }}
-                </div>
-            </div>
-        </div>
-    </div>
+
+
 </x-app-layout>
