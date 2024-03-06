@@ -12,7 +12,7 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        //
+        return view('chat.index');
     }
 
     /**
