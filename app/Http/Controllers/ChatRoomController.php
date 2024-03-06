@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chat;
 use App\Models\ChatRoom;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,18 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        return view('chat.index');
+        $chatRoomId = Chat::where('user_id', auth()->user()->id)->pluck('chat_room_id')->toArray();
+        $chats = Chat::where(
+            function ($q) use ($chatRoomId) {
+                $q->whereNot('user_id', auth()->user()->id)->whereIn('chat_room_id', $chatRoomId);
+            }
+        )->get();
+        // $chats = Chat::where('chat_room_id', [3, 4])->get();
+        // dd($chatRoomId, $chats);
+
+        // $chatroom = Chat::where('user_id', auth()->user()->id)->pluck('chat_room_id');
+        // dd($chatroom);
+        return view('chat.index', compact('chats'));
     }
 
     /**
