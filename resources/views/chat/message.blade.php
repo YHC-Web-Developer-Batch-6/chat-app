@@ -30,10 +30,10 @@
                                 <div class="flex justify-start mb-4">
                                     <div
                                         class="ml-2 py-3 px-4 bg-gray-500 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white max-w-[50%] grid">
-                                        <span class="font-medium">
+                                        <p class="font-medium break-words">
 
                                             {{ $message->message }}
-                                        </span>
+                                        </p>
                                         <span class="text-slate-50">
                                             {{ Str::substr($message->created_at, 11, 5) }}
                                         </span>
@@ -43,10 +43,11 @@
                                 <div class="flex justify-end mb-4">
                                     <div
                                         class="mr-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-black max-w-[50%] grid">
-                                        <span class="font-medium">
+                                        <p class="font-medium "
+                                            style="overflow-wrap: break-word; word-break: break-word">
 
                                             {{ $message->message }}
-                                        </span>
+                                        </p>
                                         <span class="text-slate-500">
                                             {{ Str::substr($message->created_at, 11, 5) }}
                                         </span>
