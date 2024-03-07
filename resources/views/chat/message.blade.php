@@ -25,7 +25,7 @@
             <div class="w-full">
 
                 <div class=" w-full px-5 flex flex-col justify-between h-[650px]">
-                    <div class="relative flex flex-col mt-5 overflow-y-scroll ">
+                    <div class="relative flex flex-col mt-5 overflow-y-scroll " id="messageContainer">
 
                         @foreach ($messages as $message)
                             @if ($message->chat->user->id != Auth::user()->id)
@@ -68,3 +68,10 @@
     </div>
 
 </x-app-layout>
+
+<script>
+    window.addEventListener('load', function() {
+        var messageContainer = document.getElementById('messageContainer');
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    });
+</script>
