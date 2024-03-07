@@ -1,7 +1,4 @@
 <x-app-layout>
-
-
-
     <div class="min-w-full border rounded lg:grid lg:grid-cols-3 ">
         <div class="border-r border-gray-300 lg:col-span-1">
             <div class="justify-end px-4 pt-4 ">
@@ -10,12 +7,15 @@
                 </a>
             </div>
 
-            <div class="w-full flex justify-center my-52">
-                <div class="flex gap-5 justify-center items-center flex-col">
+            <div class="w-full flex justify-center mt-40">
+                <div class="flex gap-3 justify-center items-center flex-col">
                     <img class="w-52 h-52 object-cover rounded-full"
                         src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg" alt="">
-                    <h1 style="font-size: 20px"><b>{{ $users->user->name }}</b></h1>
-                    <h5>{{ $users->user->email }}</h5>
+                    <div class="text-center">
+
+                        <h1><b>{{ $users->user->name }}</b></h1>
+                        <h5>{{ $users->user->email }}</h5>
+                    </div>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
         <div class="hidden lg:col-span-2 lg:block ">
             <div class="w-full">
 
-                <div class=" w-full px-5 flex flex-col justify-between h-[650px]">
+                <div class=" w-full px-5 flex flex-col justify-between h-[600px]">
                     <div class="relative flex flex-col mt-5 overflow-y-scroll " id="messageContainer">
 
                         @foreach ($messages as $message)
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between w-full px-5 py-8 border-t border-gray-300">
+                <div class="flex items-center justify-between w-full px-5 pt-4 pb-2 border-t border-gray-300">
 
                     <input type="text" placeholder="Message"
                         class="block w-full py-3 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
