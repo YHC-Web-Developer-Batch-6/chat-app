@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Chat;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,22 +21,27 @@ class ChatRoomController extends Controller
                 $q->whereNot('user_id', auth()->user()->id)->whereIn('chat_room_id', $chatRoomId);
             }
         )->get();
-        // $chats = Chat::where('chat_room_id', [3, 4])->get();
-        // dd($chatRoomId, $chats);
 
-        // $chatroom = Chat::where('user_id', auth()->user()->id)->pluck('chat_room_id');
-        // dd($chatroom);
         return view('chat.index', compact('chats'));
     }
 
-    function message($id)
+    public function message($id)
     {
         $messages = ChatMessage::where('chat_room_id', $id)->get();
         $users = Chat::where('chat_room_id', $id)->whereNot('user_id', Auth::user()->id)->first();
-        // dd($users);
-
 
         return view('chat.message', compact('messages', 'users'));
+    }
+
+    public function messageResponse($id)
+    {
+        $messages = ChatMessage::where('chat_room_id', $id)->get();
+        $users = Chat::where('chat_room_id', $id)->whereNot('user_id', Auth::user()->id)->first();
+
+        return response()->json([
+            "message" => $messages,
+            "users" => $users,
+        ]);
     }
 
     /**
@@ -53,7 +57,27 @@ class ChatRoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'chat_room_id' => 'required',
+            'user_id' => 'required',
+            'message' => 'required',
+        ]);
+
+        $chatId = Chat::where('chat_room_id', $request->chat_room_id)
+            ->where('user_id', $request->user_id)
+            ->pluck('id')->first();
+
+        $chatMessage = ChatMessage::create([
+            'chat_room_id' => $request->chat_room_id,
+            'chat_id' => $chatId,
+            'message' => $request->message,
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Message successfully created!",
+            "data" => null,
+        ], 201);
     }
 
     /**
