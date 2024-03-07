@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ChatMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class ChatMessageController extends Controller
 {
@@ -26,9 +27,9 @@ class ChatMessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): 
     {
-        //
+
     }
 
     /**

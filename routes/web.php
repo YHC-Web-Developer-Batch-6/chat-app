@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ChatRoomController;
+use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Chat;
+use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/message/{id}', [ChatRoomController::class, 'message'])->name('chat.message');
+
 Route::resource('chats', ChatRoomController::class)->only(['index', 'message'])->middleware(['auth', 'verified']);
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
