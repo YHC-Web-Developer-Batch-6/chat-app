@@ -25,22 +25,20 @@
             <div class="w-full">
 
                 <div class=" w-full px-5 flex flex-col justify-between h-[600px]">
-                    <div class="relative flex flex-col mt-5 overflow-y-scroll " id="messageContainer">
+                    <div class="relative flex flex-col mt-5 overflow-y-auto " id="messageContainer">
 
                         @foreach ($messages as $message)
                             @if ($message->chat->user->id != Auth::user()->id)
                                 <div class="flex justify-start mb-4">
-
                                     <div
-                                        class="ml-2 py-3 px-4 bg-gray-500 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white w-1/2">
+                                        class="ml-2 py-3 px-4 bg-gray-500 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white max-w-[50%]">
                                         {{ $message->message }}
                                     </div>
                                 </div>
                             @else
                                 <div class="flex justify-end mb-4">
-
                                     <div
-                                        class="mr-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-black w-1/2">
+                                        class="mr-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-black max-w-[50%]">
                                         {{ $message->message }}
                                     </div>
 
