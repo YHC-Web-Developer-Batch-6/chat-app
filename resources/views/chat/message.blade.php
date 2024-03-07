@@ -14,7 +14,7 @@
 
         <div class="min-w-full border rounded lg:grid lg:grid-cols-3">
             <div class="border-r border-gray-300 lg:col-span-1">
-                <div class="w-full flex justify-center my-52">
+                <div class="w-full flex justify-center mt-52">
                     <div class="flex gap-5 justify-center items-center flex-col">
                         <img class="w-52 h-52 object-cover rounded-full"
                             src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg" alt="">
@@ -25,22 +25,9 @@
 
 
             </div>
-            <div class="hidden lg:col-span-2 lg:block">
-                <div class="w-full">
-                    <div class="relative flex justify-between items-center p-3 border-b border-gray-300">
-                        <div class="flex items-center">
-
-                            <img class="object-cover w-10 h-10 rounded-full"
-                                src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg"
-                                alt="username" />
-                            <span class="block ml-2 font-bold text-gray-600">{{ $users->user->name }}</span>
-
-                        </div>
-                        <a href="{{ route('chats.index') }}">
-                            ❌
-                        </a>
-                    </div>
-                    <div class="relative w-full p-6 overflow-y-auto h-[40rem]">
+            <div class="hidden lg:col-span-2 lg:block ">
+                <div class="w-full h-[400px]">
+                    <div class="relative w-full p-6 overflow-y-auto h-[500px] ">
                         <ul class="space-y-2">
                             @foreach ($messages as $message)
                                 @if ($message->chat->user->id != Auth::user()->id)
