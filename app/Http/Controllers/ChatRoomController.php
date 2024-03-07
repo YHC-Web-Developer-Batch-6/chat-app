@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageCreated;
 use App\Models\Chat;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
@@ -65,7 +66,8 @@ class ChatRoomController extends Controller
 
         $chatId = Chat::where('chat_room_id', $request->chat_room_id)
             ->where('user_id', $request->user_id)
-            ->pluck('id')->first();
+            ->pluck('id')
+            ->first();
 
         $chatMessage = ChatMessage::create([
             'chat_room_id' => $request->chat_room_id,
@@ -73,10 +75,12 @@ class ChatRoomController extends Controller
             'message' => $request->message,
         ]);
 
+        event(new MessageCreated($chatMessage));
+
         return response()->json([
             "status" => "success",
             "message" => "Message successfully created!",
-            "data" => null,
+            "data" => $chatMessage,
         ], 201);
     }
 
