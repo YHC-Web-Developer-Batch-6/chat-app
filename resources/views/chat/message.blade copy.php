@@ -15,7 +15,7 @@
                     <img class="w-52 h-52 object-cover rounded-full"
                         src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg" alt="">
                     <h1 style="font-size: 20px"><b>{{ $users->user->name }}</b></h1>
-                    <h5>{{ $users->user->email }}</h5>
+                    <h5>J{{ $users->user->email }}</h5>
                 </div>
             </div>
 
