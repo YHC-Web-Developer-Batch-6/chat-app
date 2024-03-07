@@ -12,7 +12,6 @@
                     <img class="w-52 h-52 object-cover rounded-full"
                         src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg" alt="">
                     <div class="text-center">
-
                         <h1><b>{{ $users->user->name }}</b></h1>
                         <h5>{{ $users->user->email }}</h5>
                     </div>
@@ -23,10 +22,8 @@
         </div>
         <div class="hidden lg:col-span-2 lg:block ">
             <div class="w-full">
-
                 <div class=" w-full px-5 flex flex-col justify-between h-[600px]">
                     <div class="relative flex flex-col mt-5 overflow-y-auto " id="messageContainer">
-
                         @foreach ($messages as $message)
                             @if ($message->chat->user->id != Auth::user()->id)
                                 <div class="flex justify-start mb-4">
@@ -48,12 +45,11 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between w-full px-5 pt-4 pb-2 border-t border-gray-300">
-
-                    <input type="text" placeholder="Message"
-                        class="block w-full py-3 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
-                        name="message" required />
-                    <button type="submit">
+                <div class="flex items-center justify-between w-full px-5 py-8 border-t border-gray-300">
+                    <input id="chatbox" type="text" placeholder="Message"
+                            class="block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
+                            name="message" required />
+                    <button type="click" onclick="clickme()">
                         <svg class="w-5 h-5 text-gray-500 origin-center transform rotate-90"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path
@@ -71,5 +67,61 @@
     window.addEventListener('load', function() {
         var messageContainer = document.getElementById('messageContainer');
         messageContainer.scrollTop = messageContainer.scrollHeight;
+    });
+</script>
+
+<script>
+    function clickme() {
+        const csrf = document.querySelector('meta[name="csrf-token"]').content;
+        const text = document.querySelector('input[name="message"]').value;
+
+        const data = {
+            chat_room_id: {!! request()->id !!},
+            user_id: {!! auth()->user()->id !!},
+            message: text,
+            _token: csrf,
+        }
+
+        const xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", `/message/${data.chat_room_id}/store`, true);
+        xmlhttp.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
+        xmlhttp.send(JSON.stringify(data));
+
+        xmlhttp.onload = function () {
+            if(xmlhttp.status === 201) {
+                console.log(xmlhttp.response);
+                document.querySelector('input[name="message"]').value = '';
+            }
+        }
+    }
+
+    const input = document.getElementById("chatbox");
+    input.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            clickme();
+        }
+    });
+</script>
+
+<script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    let token = document.querySelector('meta[name="csrf-token"]').content;
+
+    const pusher = new Pusher('{!! env('PUSHER_APP_KEY') !!}', {
+        cluster: "ap1",
+        channelAuthorization: {
+            endpoint: "/broadcasting/auth",
+            headers: { "X-CSRF-Token": token },
+        },
+    });
+
+    const roomId = {!! request()->id !!};
+    const channel = pusher.subscribe(`private-room.channel.${roomId}`);
+
+    channel.bind("chat-message-event", function (data) {
+        window.location.href = `/message/${roomId}`;
     });
 </script>
