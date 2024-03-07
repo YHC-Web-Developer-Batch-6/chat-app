@@ -31,7 +31,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/message/{id}', [ChatRoomController::class, 'message'])->name('chat.message');
+Route::controller(ChatRoomController::class)->group(function () {
+    Route::get('/message/{id}', 'message')->name('chat.message');
+    Route::post('/message/{id}/store', 'store')->name('chat.store');
+});
 
 Route::resource('chats', ChatRoomController::class)->only(['index', 'message'])->middleware(['auth', 'verified']);
 Route::middleware('auth')->group(function () {
