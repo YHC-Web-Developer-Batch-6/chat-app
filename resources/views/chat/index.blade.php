@@ -15,13 +15,21 @@
                                 <img src="https://source.unsplash.com/800x800?person" alt="Profile Pict">
                             </div>
                         </div>
-                        <div class="w-3/4">
-                            <h2 class="text-black text-2xl font-medium">{{ $chat->user->name }}</h2>
+                        <div class="max-w-[450px]">
+                            <div class="flex items-center">
+                                <h2 class="text-black text-2xl font-medium me-3">{{ $chat->user->name }}</h2>
+                                <span class="relative flex h-3 w-3">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-3 w-3 bg-[#818CF8]"></span>
+                                </span>
+                            </div>
+
                             <p class="text-gray-400 line-clamp-1 break-words " style="word-break: break-all">
                                 {{ $chat->chatRoom->last_message }}</p>
                         </div>
-                        <div class="ms-auto text-gray-400 text-xs">
-                            {{ $chat->chatRoom->last_time }}
+                        <div class="ms-auto text-gray-400 text-xs text-pretty max-w-full">
+                            {{ $chat->chatRoom->last_time->diffForHumans() }}
                         </div>
                     </div>
                 </div>
