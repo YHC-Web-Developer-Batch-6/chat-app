@@ -18,15 +18,12 @@
                         <div class="max-w-[450px]">
                             <div class="flex items-center">
                                 <h2 class="text-black text-2xl font-medium me-3">{{ $chat->user->name }}</h2>
-                                <span class="relative flex h-3 w-3">
-                                    <span
-                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-3 w-3 bg-[#818CF8]"></span>
-                                </span>
+                                <span id="ping-{{ $chat->chat_room_id }}" class="relative flex h-3 w-3"></span>
                             </div>
 
-                            <p class="text-gray-400 line-clamp-1 break-words " style="word-break: break-all">
-                                {{ $chat->chatRoom->last_message }}</p>
+                            <p id="last-message-{{ $chat->chat_room_id }}" class="text-gray-400 line-clamp-1 break-words " style="word-break: break-all">
+                                {{ $chat->chatRoom->last_message }}
+                            </p>
                         </div>
                         <div class="ms-auto text-gray-400 text-xs text-pretty max-w-full">
                             {{ $chat->chatRoom->last_time->diffForHumans() }}
@@ -53,11 +50,20 @@
             },
         });
 
+
         roomChatIds.forEach(id => {
+            const ping = document.getElementById(`ping-${id}`);
+            const chat = document.getElementById(`last-message-${id}`);
             const channel = pusher.subscribe(`private-room.channel.${id}`);
 
-            channel.bind("chat-message-event", function(data) {
-                alert("New Message");
+            channel.bind("chat-message-event", function(res) {
+                ping.innerHTML = `
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-[#818CF8]"></span>
+                `;
+
+                chat.innerText = res.message.message;
             });
         });
     </script>
