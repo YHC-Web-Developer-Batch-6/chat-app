@@ -14,12 +14,14 @@ class ChatRoom extends Model
     protected $guarded = [];
     protected $append = [
         'last_message',
+        'last_time',
     ];
 
     function chats(): HasMany
     {
         return $this->hasMany(Chat::class);
     }
+    
     function chatMessages(): HasMany
     {
         return $this->hasMany(ChatMessage::class);
@@ -28,5 +30,10 @@ class ChatRoom extends Model
     function getLastMessageAttribute()
     {
         return $this->chatMessages()->orderByDesc('created_at')->pluck('message')->first();
+    }
+
+    function getLastTimeAttribute()
+    {
+        return $this->chatMessages()->orderByDesc('created_at')->pluck('created_at')->first();
     }
 }

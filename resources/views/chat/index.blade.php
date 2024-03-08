@@ -21,7 +21,7 @@
                                 {{ $chat->chatRoom->last_message }}</p>
                         </div>
                         <div class="ms-auto text-gray-400 text-xs">
-                            {{ $chat->chatRoom->created_at->diffForHumans() }}
+                            {{ $chat->chatRoom->last_time }}
                         </div>
                     </div>
                 </div>
