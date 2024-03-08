@@ -22,45 +22,11 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
         <div class="hidden lg:col-span-2 lg:block">
             <div class="w-full">
                 <div class=" w-full px-5 flex flex-col justify-between h-[600px]">
                     <div class="relative flex flex-col mt-5 overflow-y-auto " id="messageContainer">
-
-                        @foreach ($messages as $message)
-                            @if ($message->chat->user->id != Auth::user()->id)
-                                <div class="flex justify-start mb-2">
-                                    <div
-                                        class="ml-2 py-3 px-4 bg-gray-500 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white max-w-[50%] grid">
-                                        <p class="font-medium break-words">
-
-                                            {{ $message->message }}
-                                        </p>
-                                        <span class="text-slate-300 text-xs mt-2 text-right">
-                                            {{ Str::substr($message->created_at, 11, 5) }}
-                                        </span>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="flex justify-end mb-2">
-                                    <div
-                                        class="mr-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-black max-w-[50%] grid">
-                                        <p class="font-medium "
-                                            style="overflow-wrap: break-word; word-break: break-word">
-
-                                            {{ $message->message }}
-                                        </p>
-                                        <span class="text-slate-500 text-xs mt-2">
-                                            {{ Str::substr($message->created_at, 11, 5) }}
-                                        </span>
-                                    </div>
-
-                                </div>
-                            @endif
-                        @endforeach
                     </div>
                 </div>
 
@@ -68,7 +34,7 @@
                     <input id="chatbox" type="text" placeholder="Message"
                         class="block w-full pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
                         name="message" required />
-                    <button type="click" onclick="clickme()">
+                    <button type="click" onclick="sendMessage()">
                         <svg class="w-5 h-5 text-gray-500 origin-center transform rotate-90"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path
@@ -83,14 +49,87 @@
 </x-app-layout>
 
 <script>
-    window.addEventListener('load', function() {
-        var messageContainer = document.getElementById('messageContainer');
-        messageContainer.scrollTop = messageContainer.scrollHeight;
+    $(document).ready(function () {
+        // Load chat
+        const request = function () { 
+            $.ajax({
+                type: 'GET',
+                url: '{{ route("chat.response", ["id" => request()->id]) }}',
+                dataType: 'json',
+                success: function (res) {
+                    $.each(res.data, function (i, data) {
+                        const text = data.message;
+                        const timestamp = data.created_at;
+                        const time = timestamp.substring(11, 16);
+                        const userId = {!! auth()->user()->id !!};
+
+                        if (data.chat.user_id != userId) {
+                            $('#messageContainer').append(
+                                `<div class="flex justify-start mb-2">
+                                    <div
+                                        class="ml-2 py-3 px-4 bg-gray-500 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white max-w-[50%] grid">
+                                        <p class="font-medium" style="word-break: break-word;">
+                                            ${text}
+                                        </p>
+                                        <span class="text-slate-300 text-xs mt-2 text-right">
+                                            ${time}
+                                        </span>
+                                    </div>
+                                </div>`
+                            );
+                        } else {
+                            $('#messageContainer').append(
+                                `<div class="flex justify-end mb-2">
+                                    <div
+                                        class="mr-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-black max-w-[50%] grid">
+                                        <p class="font-medium" style="word-break: break-word;">
+                                            ${text}
+                                        </p>
+                                        <span class="text-slate-500 text-xs mt-2">
+                                            ${time}
+                                        </span>
+                                    </div>
+                                </div>`
+                            );
+                        }
+                    })
+
+                    const messageContainer = document.getElementById('messageContainer');
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+                },
+                error: function () {
+                    console.log(data);
+                }
+            });
+        };
+
+        request();
+
+        // Pusher event
+        Pusher.logToConsole = true;
+
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const pusher = new Pusher('{!! env('PUSHER_APP_KEY') !!}', {
+            cluster: "ap1",
+            channelAuthorization: {
+                endpoint: "/broadcasting/auth",
+                headers: {
+                    "X-CSRF-Token": token
+                },
+            },
+        });
+
+        const roomId = {!! request()->id !!};
+        const channel = pusher.subscribe(`private-room.channel.${roomId}`);
+
+        channel.bind("chat-message-event", function(data) {
+            request();
+        });
     });
 </script>
 
 <script>
-    function clickme() {
+    function sendMessage() {
         const csrf = document.querySelector('meta[name="csrf-token"]').content;
         const text = document.querySelector('input[name="message"]').value;
 
@@ -118,31 +157,7 @@
     input.addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
             event.preventDefault();
-            clickme();
+            sendMessage();
         }
-    });
-</script>
-
-<script>
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
-
-    let token = document.querySelector('meta[name="csrf-token"]').content;
-
-    const pusher = new Pusher('{!! env('PUSHER_APP_KEY') !!}', {
-        cluster: "ap1",
-        channelAuthorization: {
-            endpoint: "/broadcasting/auth",
-            headers: {
-                "X-CSRF-Token": token
-            },
-        },
-    });
-
-    const roomId = {!! request()->id !!};
-    const channel = pusher.subscribe(`private-room.channel.${roomId}`);
-
-    channel.bind("chat-message-event", function(data) {
-        window.location.href = `/message/${roomId}`;
     });
 </script>

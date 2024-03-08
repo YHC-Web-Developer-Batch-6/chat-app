@@ -36,12 +36,12 @@ class ChatRoomController extends Controller
 
     public function messageResponse($id)
     {
-        $messages = ChatMessage::where('chat_room_id', $id)->get();
-        $users = Chat::where('chat_room_id', $id)->whereNot('user_id', Auth::user()->id)->first();
+        $messages = ChatMessage::where('chat_room_id', $id)->with('chat')->get();
 
         return response()->json([
-            "message" => $messages,
-            "users" => $users,
+            "status" => "success",
+            "message" => "Data retrived successfully",
+            "data" => $messages,
         ]);
     }
 
