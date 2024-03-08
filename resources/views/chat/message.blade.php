@@ -15,7 +15,7 @@
             <div class="w-full flex justify-center items-center">
                 <div class="flex gap-3 justify-center items-center flex-col">
                     <img class="w-52 h-52 object-cover rounded-full mt-40"
-                        src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg" alt="">
+                        src="https://eu.ui-avatars.com/api/?name={{ $users->user->name }}" alt="">
                     <div class="text-center">
                         <h1><b>{{ $users->user->name }}</b></h1>
                         <h5>{{ $users->user->email }}</h5>

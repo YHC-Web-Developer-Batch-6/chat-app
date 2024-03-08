@@ -12,7 +12,7 @@
                         class="max-w-3xl mx-auto sm:px-6 lg:px-8 bg-white py-3 flex rounded-lg shadow-md hover:bg-slate-50 ">
                         <div class="w-auto">
                             <div class="bg-black w-16 h-16 rounded-full me-4 overflow-hidden">
-                                <img src="https://source.unsplash.com/800x800?person" alt="Profile Pict">
+                                <img src="https://eu.ui-avatars.com/api/?name={{ $chat->user->name }}" alt="Profile Pict">
                             </div>
                         </div>
                         <div class="max-w-[450px]">
