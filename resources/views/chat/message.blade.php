@@ -20,7 +20,7 @@
 
 
         </div>
-        <div class="hidden lg:col-span-2 lg:block">
+        <div class="hidden lg:col-span-2 lg:block " style="background-image: url( asset('') )">
             <div class="w-full">
                 <div class=" w-full px-5 flex flex-col justify-between h-[600px]">
                     <div class="relative flex flex-col mt-5 overflow-y-auto " id="messageContainer">
@@ -30,11 +30,11 @@
                                 <div class="flex justify-start mb-4">
                                     <div
                                         class="ml-2 py-3 px-4 bg-gray-500 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white max-w-[50%] grid">
-                                        <p class="font-medium break-words">
+                                        <p class="font-medium break-words" style="word-break: break-all">
 
                                             {{ $message->message }}
                                         </p>
-                                        <span class="text-slate-50">
+                                        <span class="text-slate-50 ms-auto">
                                             {{ Str::substr($message->created_at, 11, 5) }}
                                         </span>
                                     </div>

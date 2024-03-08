@@ -17,7 +17,8 @@
                         </div>
                         <div class="">
                             <h2 class="text-black text-2xl font-medium">{{ $chat->user->name }}</h2>
-                            <p class="text-gray-400 line-clamp-1">{{ $chat->chatRoom->last_message }}</p>
+                            <p class="text-gray-400 line-clamp-1 break-words" style="word-break: break-all">
+                                {{ $chat->chatRoom->last_message }}</p>
                         </div>
                         <div class="ms-auto text-gray-400">
                             12.00
@@ -46,7 +47,7 @@
 
         roomChatIds.forEach(id => {
             const channel = pusher.subscribe(`private-room.channel.${id}`);
-            
+
             channel.bind("chat-message-event", function(data) {
                 alert("New Message");
             });
