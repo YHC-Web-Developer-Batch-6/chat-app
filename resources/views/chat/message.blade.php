@@ -1,4 +1,9 @@
 <x-app-layout>
+    <style>
+        #bgchat {
+            background: url('public/image/bg.jpg');
+        }
+    </style>
     <div class="min-w-full border rounded lg:grid lg:grid-cols-3 ">
         <div class="border-r border-gray-300 lg:col-span-1 max-h-screen">
             <div class="justify-end px-4 pt-4 ">
@@ -9,7 +14,7 @@
 
             <div class="w-full flex justify-center items-center">
                 <div class="flex gap-3 justify-center items-center flex-col">
-                    <img class="w-52 h-52 object-cover rounded-full"
+                    <img class="w-52 h-52 object-cover rounded-full mt-40"
                         src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg" alt="">
                     <div class="text-center">
                         <h1><b>{{ $users->user->name }}</b></h1>
@@ -20,27 +25,27 @@
 
 
         </div>
-        <div class="hidden lg:col-span-2 lg:block " style="background-image: url( asset('') )">
+        <div class="hidden lg:col-span-2 lg:block">
             <div class="w-full">
                 <div class=" w-full px-5 flex flex-col justify-between h-[600px]">
                     <div class="relative flex flex-col mt-5 overflow-y-auto " id="messageContainer">
 
                         @foreach ($messages as $message)
                             @if ($message->chat->user->id != Auth::user()->id)
-                                <div class="flex justify-start mb-4">
+                                <div class="flex justify-start mb-2">
                                     <div
                                         class="ml-2 py-3 px-4 bg-gray-500 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white max-w-[50%] grid">
-                                        <p class="font-medium break-words" style="word-break: break-all">
+                                        <p class="font-medium break-words">
 
                                             {{ $message->message }}
                                         </p>
-                                        <span class="text-slate-50 ms-auto">
+                                        <span class="text-slate-300 text-xs mt-2 text-right">
                                             {{ Str::substr($message->created_at, 11, 5) }}
                                         </span>
                                     </div>
                                 </div>
                             @else
-                                <div class="flex justify-end mb-4">
+                                <div class="flex justify-end mb-2">
                                     <div
                                         class="mr-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-black max-w-[50%] grid">
                                         <p class="font-medium "
@@ -48,7 +53,7 @@
 
                                             {{ $message->message }}
                                         </p>
-                                        <span class="text-slate-500">
+                                        <span class="text-slate-500 text-xs mt-2">
                                             {{ Str::substr($message->created_at, 11, 5) }}
                                         </span>
                                     </div>

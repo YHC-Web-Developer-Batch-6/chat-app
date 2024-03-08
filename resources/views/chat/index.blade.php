@@ -15,13 +15,13 @@
                                 <img src="https://source.unsplash.com/800x800?person" alt="Profile Pict">
                             </div>
                         </div>
-                        <div class="">
+                        <div class="w-3/4">
                             <h2 class="text-black text-2xl font-medium">{{ $chat->user->name }}</h2>
-                            <p class="text-gray-400 line-clamp-1 break-words" style="word-break: break-all">
+                            <p class="text-gray-400 line-clamp-1 break-words " style="word-break: break-all">
                                 {{ $chat->chatRoom->last_message }}</p>
                         </div>
-                        <div class="ms-auto text-gray-400">
-                            12.00
+                        <div class="ms-auto text-gray-400 text-xs">
+                            {{ $chat->chatRoom->created_at->diffForHumans() }}
                         </div>
                     </div>
                 </div>
