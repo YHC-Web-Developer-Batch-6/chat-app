@@ -4,8 +4,8 @@
             background: url('public/image/bg.jpg');
         }
     </style>
-    <div class="min-w-full border rounded lg:grid lg:grid-cols-3 ">
-        <div class="border-r border-gray-300 lg:col-span-1 max-h-screen">
+    <div class="min-w-full min-h-screen border rounded lg:grid lg:grid-cols-3 ">
+        <div class="border-r border-gray-300 lg:col-span-1 max-h-screen max-sm:hidden">
             <div class="justify-end px-4 pt-4 ">
                 <a href="{{ route('chats.index') }}">
                     ❌
@@ -23,14 +23,30 @@
                 </div>
             </div>
         </div>
-        <div class="hidden lg:col-span-2 lg:block">
+        <div class=" lg:col-span-2">
             <div class="w-full">
+                <div class=" hidden max-sm:contents ml-4 flex-1 py-4">
+                    <div class="justify-between bg-white p-3 flex">
+                        <div class="flex text-center items-center">
+                            <img class="w-10 h-10 object-cover rounded-full "
+                            src="https://eu.ui-avatars.com/api/?name={{ $users->user->name }}" alt="">
+                            <p class="text-grey-darkest ml-4">
+                                {{ $users->user->name }}
+                            </p>
+                        </div>
+                        <div class=" content-center">
+                            <a class="" href="{{ route('chats.index') }}">
+                                ❌
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div class=" w-full px-5 flex flex-col justify-between h-[600px]">
-                    <div class="relative flex flex-col mt-5 overflow-y-auto " id="messageContainer">
+                    <div class="relative flex flex-col mt-5 overflow-y-auto mb-16 sm:mb-0" id="messageContainer">
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between w-full px-5 pt-3 pb-3 border-t border-gray-300">
+                <div class="flex items-center justify-between w-full px-5 pt-3 pb-3 border-t border-gray-300 max-sm:fixed max-sm:bottom-0 bg-white">
                     <input id="chatbox" type="text" placeholder="Message"
                         class="block w-full pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
                         name="message" required />
