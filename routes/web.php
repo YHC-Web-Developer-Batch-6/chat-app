@@ -1,12 +1,7 @@
 <?php
 
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ChatRoomController;
-use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Chat;
-use App\Models\ChatMessage;
-use App\Models\ChatRoom;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +27,7 @@ Route::controller(ChatRoomController::class)->group(function () {
     Route::get('/message/{id}', 'message')->name('chat.message');
     Route::post('/message/{id}/store', 'store')->name('chat.store');
     Route::get('/message/{id}/res', 'messageResponse')->name('chat.response');
+    Route::get('/chat/{contactId}', 'chatRoom')->name('chat.room');
 });
 
 Route::resource('chats', ChatRoomController::class)->only(['index', 'message'])->middleware(['auth', 'verified']);

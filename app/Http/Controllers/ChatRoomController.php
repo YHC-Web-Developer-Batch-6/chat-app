@@ -6,8 +6,10 @@ use App\Events\MessageCreated;
 use App\Models\Chat;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ChatRoomController extends Controller
 {
@@ -23,11 +25,67 @@ class ChatRoomController extends Controller
             }
         )->get();
 
-        return view('chat.index', compact('chats'));
+        $users = User::all()->where('id', '!=', auth()->user()->id);
+
+        return view('chat.index', compact('chats', 'users'));
+    }
+
+    public function chatRoom($contactId)
+    {
+        $userChats = Chat::where('user_id', auth()->user()->id)->get();
+        $contactChats = Chat::where('user_id', $contactId)->get();
+
+        $chat = null;
+        foreach ($userChats as $userChat) {
+            foreach ($contactChats as $contactChat) {
+                if ($userChat->chat_room_id === $contactChat->chat_room_id) {
+                    $chat = $userChat->chat_room_id;
+                    break;
+                }
+            }
+        }
+
+        if (!$chat) {
+            try {
+                DB::beginTransaction();
+
+                $chatRoom = ChatRoom::create([
+                    "is_group" => "0",
+                    "title" => null,
+                ]);
+
+                Chat::create([
+                    "chat_room_id" => $chatRoom->id,
+                    "user_id" => auth()->user()->id,
+                ])->id;
+
+                Chat::create([
+                    "chat_room_id" => $chatRoom->id,
+                    "user_id" => $contactId,
+                ]);
+
+                $chat = $chatRoom->id;
+
+                DB::commit();
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                throw $th;
+            }
+        }
+
+        return redirect()->route('chat.message', [
+            'id' => $chat,
+        ]);
     }
 
     public function message($id)
     {
+        $isChat = Chat::where('chat_room_id', $id)->where('user_id', auth()->user()->id)->exists();
+
+        if (!$isChat) {
+            abort(403);
+        }
+
         $messages = ChatMessage::where('chat_room_id', $id)->get();
         $users = Chat::where('chat_room_id', $id)->whereNot('user_id', Auth::user()->id)->first();
 

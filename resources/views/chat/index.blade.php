@@ -1,37 +1,67 @@
 <x-app-layout>
-    <x-slot name="header" class="">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    <x-slot name="header">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Chat') }}
         </h2>
     </x-slot>
-    <div class="mt-4">
+    <div class="mt-4 px-4 sm:px-0">
         @foreach ($chats as $chat)
-            <a href="{{ route('chat.message', ['id' => $chat->chat_room_id]) }}">
-                <div id="room-chat-{{ $chat->chat_room_id }}" class="pt-3">
-                    <div
-                        class="max-w-3xl mx-auto sm:px-6 lg:px-8 bg-white py-3 flex rounded-lg shadow-md hover:bg-slate-50 ">
-                        <div class="w-auto">
-                            <div class="bg-black w-16 h-16 rounded-full me-4 overflow-hidden">
-                                <img src="https://eu.ui-avatars.com/api/?name={{ $chat->user->name }}" alt="Profile Pict">
+            @if ($chat->chatRoom->last_message != null)
+                <a href="{{ route('chat.message', ['id' => $chat->chat_room_id]) }}">
+                    <div class="pt-3" id="room-chat-{{ $chat->chat_room_id }}">
+                        <div
+                            class="mx-auto flex max-w-3xl rounded-lg bg-white p-3 shadow-md hover:bg-slate-50 sm:px-6 lg:px-8">
+                            <div class="w-auto">
+                                <div class="me-4 h-16 w-16 overflow-hidden rounded-full bg-black">
+                                    <img src="https://eu.ui-avatars.com/api/?name={{ $chat->user->name }}"
+                                        alt="Profile Pict">
+                                </div>
                             </div>
-                        </div>
-                        <div class="max-w-[450px]">
-                            <div class="flex items-center">
-                                <h2 class="text-black text-2xl font-medium me-3">{{ $chat->user->name }}</h2>
-                                <span id="ping-{{ $chat->chat_room_id }}" class="relative flex h-3 w-3"></span>
-                            </div>
+                            <div class="max-w-[450px]">
+                                <div class="flex items-center">
+                                    <h2 class="me-3 text-2xl font-medium text-black">{{ $chat->user->name }}</h2>
+                                    <span class="relative flex h-3 w-3" id="ping-{{ $chat->chat_room_id }}"></span>
+                                </div>
 
-                            <p id="last-message-{{ $chat->chat_room_id }}" class="text-gray-400 line-clamp-1 break-words " style="word-break: break-all">
-                                {{ $chat->chatRoom->last_message }}
-                            </p>
-                        </div>
-                        <div class="ms-auto text-gray-400 text-xs text-pretty max-w-full">
-                            {{ $chat->chatRoom->last_time->diffForHumans() }}
+                                <p class="line-clamp-1 break-words text-gray-400"
+                                    id="last-message-{{ $chat->chat_room_id }}" style="word-break: break-all">
+                                    {{ $chat->chatRoom->last_message }}
+                                </p>
+                            </div>
+                            <div class="text-pretty ms-auto max-w-full text-xs text-gray-400">
+                                {{ $chat->chatRoom->last_time->diffForHumans() }}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            @endif
         @endforeach
+    </div>
+    <div class="mt-6 px-4 sm:px-0">
+        <div class="mx-auto max-w-3xl">
+            <h1 class="text-3xl font-bold">Contacts</h1>
+        </div>
+        <div class="flex justify-center">
+            <section class="grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
+                @foreach ($users as $user)
+                    <a class="mx-auto flex h-full w-full flex-col items-center justify-start gap-2 rounded-lg bg-white px-2 py-3 shadow-md hover:bg-slate-50 sm:px-6 lg:px-8"
+                        id="contact-{{ $user->id }}" href="{{ route('chat.room', ['contactId' => $user->id]) }}">
+                        <div class="w-auto">
+                            <div class="h-16 w-16 overflow-hidden rounded-full bg-black">
+                                <img src="https://eu.ui-avatars.com/api/?name={{ $user->name }}" alt="Profile Pict">
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="flex items-center">
+                                <h2 class="text-balance text-center text-2xl font-medium text-black">
+                                    {{ $user->name }}
+                                </h2>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </section>
+        </div>
     </div>
 
     <script>
